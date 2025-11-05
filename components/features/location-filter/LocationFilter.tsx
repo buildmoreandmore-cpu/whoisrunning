@@ -67,9 +67,9 @@ export function LocationFilter() {
     fetchCities();
   }, [selectedState]);
 
-  // Fetch counties when state and city are selected
+  // Fetch counties when state is selected (and optionally city)
   useEffect(() => {
-    if (!selectedState || !selectedCity) {
+    if (!selectedState) {
       setCounties([]);
       return;
     }
@@ -90,7 +90,7 @@ export function LocationFilter() {
     };
 
     fetchCounties();
-  }, [selectedState, selectedCity]);
+  }, [selectedState]);
 
   const hasActiveFilters = selectedState || selectedCounty || selectedCity;
 
@@ -172,7 +172,7 @@ export function LocationFilter() {
           <Select
             value={selectedCounty || ""}
             onValueChange={(value) => setSelectedCounty(value || null)}
-            disabled={!selectedCity || loadingCounties}
+            disabled={!selectedState || loadingCounties}
           >
             <SelectTrigger>
               <SelectValue placeholder={loadingCounties ? "Loading..." : "Select County"} />
