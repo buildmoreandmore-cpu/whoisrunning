@@ -43,7 +43,7 @@ export default async function Home() {
         {/* Location Filter */}
         <section className="mb-12">
           <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-semibold mb-4">Browse by Location</h3>
+            <h3 className="text-xl font-semibold mb-4">Look up Politician in your Area</h3>
             <LocationFilter />
           </div>
         </section>
