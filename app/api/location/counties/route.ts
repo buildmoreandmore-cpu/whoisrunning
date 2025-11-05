@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // US Census Bureau API - free, no API key required
-// Documentation: https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html
+// Use ACS (American Community Survey) for county data
+// Documentation: https://www.census.gov/data/developers/data-sets/acs-5year.html
 
-const CENSUS_API_BASE = "https://api.census.gov/data/2021/pep/population";
+const CENSUS_API_BASE = "https://api.census.gov/data/2021/acs/acs5";
 
 // State FIPS codes mapping
 const STATE_FIPS: { [key: string]: string } = {
@@ -36,8 +37,9 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch counties from Census API
-    const url = `${CENSUS_API_BASE}?get=NAME&for=county:*&in=state:${stateFips}`;
+    // Fetch counties from Census ACS API
+    // B01003_001E is total population
+    const url = `${CENSUS_API_BASE}?get=NAME,B01003_001E&for=county:*&in=state:${stateFips}`;
 
     const response = await fetch(url);
 
@@ -51,16 +53,18 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
 
-    // Census API returns [["NAME", "state", "county"], ["County Name", "13", "001"], ...]
+    // Census ACS API returns [["NAME", "B01003_001E", "state", "county"], ["County Name, State", "12345", "13", "001"], ...]
     // Skip the header row and extract county names
     const counties = data
       .slice(1)
       .map((row: string[]) => {
         const countyName = row[0].replace(" County", "").replace(", " + stateCode, "");
+        const population = parseInt(row[1]) || 0;
         return {
           name: countyName,
-          fips: row[2],
-          fullName: row[0]
+          fips: row[3], // County FIPS is at index 3 in ACS response
+          fullName: row[0],
+          population: population
         };
       })
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
