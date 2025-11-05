@@ -47,7 +47,7 @@ Return information in a structured format with clear bullet points.`;
         Authorization: `Bearer ${PERPLEXITY_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "llama-3.1-sonar-large-128k-online",
+        model: "sonar",
         messages: [
           {
             role: "system",

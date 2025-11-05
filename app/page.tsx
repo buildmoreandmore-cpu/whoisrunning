@@ -1,10 +1,10 @@
-import { TrendingCandidates } from "@/components/features/analytics/TrendingCandidates";
+import { TrendingCandidatesServer } from "@/components/features/analytics/TrendingCandidatesServer";
 import { LocationFilter } from "@/components/features/location-filter/LocationFilter";
-import { RecentWinners } from "@/components/features/analytics/RecentWinners";
+import { RecentWinnersServer } from "@/components/features/analytics/RecentWinnersServer";
 import { SearchBar } from "@/components/features/candidate/SearchBar";
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
@@ -46,8 +46,8 @@ export default function Home() {
 
         {/* Trending Section */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          <TrendingCandidates />
-          <RecentWinners />
+          <TrendingCandidatesServer />
+          <RecentWinnersServer />
         </section>
 
         {/* CTA Section */}
