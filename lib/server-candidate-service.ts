@@ -257,24 +257,8 @@ function getMockTrending() {
 }
 
 function getMockWinners() {
-  return [
-    {
-      id: "glenn-youngkin",
-      name: "Glenn Youngkin",
-      office: "Governor",
-      state: "Virginia",
-      party: "Republican",
-      electionDate: "November 2, 2021",
-      votePercentage: 51,
-    },
-    {
-      id: "eric-adams",
-      name: "Eric Adams",
-      office: "Mayor",
-      state: "New York",
-      party: "Democrat",
-      electionDate: "November 2, 2021",
-      votePercentage: 67,
-    },
-  ];
+  // Return empty array to make it obvious when Perplexity parsing fails
+  // This forces us to fix the real issue rather than showing stale 2021 data
+  console.warn("[Server] WARNING: Using empty mock data - Perplexity parsing likely failed");
+  return [];
 }
