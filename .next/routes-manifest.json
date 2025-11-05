@@ -61,6 +61,12 @@
       "namedRegex": "^/api/location/counties(?:/)?$"
     },
     {
+      "page": "/api/location/politicians",
+      "regex": "^/api/location/politicians(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/location/politicians(?:/)?$"
+    },
+    {
       "page": "/api/perplexity/research",
       "regex": "^/api/perplexity/research(?:/)?$",
       "routeKeys": {},

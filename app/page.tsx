@@ -1,5 +1,6 @@
 import { TrendingCandidatesServer } from "@/components/features/analytics/TrendingCandidatesServer";
 import { LocationFilter } from "@/components/features/location-filter/LocationFilter";
+import { PoliticianResults } from "@/components/features/location-filter/PoliticianResults";
 import { RecentWinnersServer } from "@/components/features/analytics/RecentWinnersServer";
 import { SearchBar } from "@/components/features/candidate/SearchBar";
 import Image from "next/image";
@@ -45,6 +46,7 @@ export default async function Home() {
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h3 className="text-xl font-semibold mb-4">Look up Politician in your Area</h3>
             <LocationFilter />
+            <PoliticianResults />
           </div>
         </section>
 
