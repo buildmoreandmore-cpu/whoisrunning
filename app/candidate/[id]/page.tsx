@@ -1,15 +1,18 @@
 import { CandidateDetailClient } from "./CandidateDetailClient";
 
-export default function CandidatePage({
+export default async function CandidatePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  // Await params in Next.js 15+
+  const { id } = await params;
+
   // Extract candidate name from ID (convert from slug format)
-  const candidateName = params.id
+  const candidateName = id
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-  return <CandidateDetailClient candidateId={params.id} candidateName={candidateName} />;
+  return <CandidateDetailClient candidateId={id} candidateName={candidateName} />;
 }
