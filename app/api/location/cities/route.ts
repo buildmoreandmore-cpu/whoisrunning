@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// US Census Bureau Places API - free, no API key required
-// Documentation: https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html
+// Use Census ACS (American Community Survey) for place data
+// Documentation: https://www.census.gov/data/developers/data-sets/acs-5year.html
 
-const CENSUS_API_BASE = "https://api.census.gov/data/2021/pep/population";
+const CENSUS_API_BASE = "https://api.census.gov/data/2021/acs/acs5";
 
 // State FIPS codes mapping
 const STATE_FIPS: { [key: string]: string } = {
@@ -37,25 +37,25 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch places (cities) from Census API
-    // Note: Census API doesn't provide direct county-to-city mapping
-    // So we fetch all places in the state and return them
-    // For county filtering, we'd need a different data source or additional processing
-    const url = `${CENSUS_API_BASE}?get=NAME,POP&for=place:*&in=state:${stateFips}`;
+    // Fetch places (cities) from Census ACS API
+    const url = `${CENSUS_API_BASE}?get=NAME,B01003_001E&for=place:*&in=state:${stateFips}`;
 
     const response = await fetch(url);
 
     if (!response.ok) {
       console.error("Census API error:", response.status, response.statusText);
+      const errorText = await response.text();
+      console.error("Census API error body:", errorText);
       return NextResponse.json(
-        { error: "Failed to fetch cities from Census API" },
+        { error: "Failed to fetch cities from Census API", details: errorText },
         { status: response.status }
       );
     }
 
     const data = await response.json();
 
-    // Census API returns [["NAME", "POP", "state", "place"], ["City Name", "12345", "13", "00001"], ...]
+    // Census API returns [["NAME", "B01003_001E", "state", "place"], ["City Name", "12345", "13", "00001"], ...]
+    // B01003_001E is total population
     // Skip the header row and extract city names
     const cities = data
       .slice(1)
@@ -66,9 +66,10 @@ export async function GET(request: NextRequest) {
           .replace(" village", "")
           .replace(" CDP", "")
           .replace(", " + stateCode, "");
+        const pop = parseInt(row[1]) || 0;
         return {
           name: cityName,
-          population: parseInt(row[1]),
+          population: pop,
           fips: row[3],
           fullName: row[0]
         };
