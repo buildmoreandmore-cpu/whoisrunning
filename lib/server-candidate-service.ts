@@ -125,7 +125,7 @@ function parseWinnersFromResponse(content: string): any[] {
     if (!nameMatch) return;
     const name = nameMatch[1].trim();
 
-    // Extract party
+    // Extract party - look for "Political Party:" or "Party:"
     const partyLine = lines.find(line => line.includes("Party:"));
     let party = "Independent";
     if (partyLine) {
@@ -133,33 +133,33 @@ function parseWinnersFromResponse(content: string): any[] {
       else if (partyLine.includes("Republican") || partyLine.includes("GOP")) party = "Republican";
     }
 
-    // Extract office
-    const officeLine = lines.find(line => line.includes("Office Won:"));
-    let office = "Unknown Office";
+    // Extract office - look for "Office:" (not "Office Won:")
+    const officeLine = lines.find(line => line.match(/Office:|Office\/race:/i));
+    let office = "Elected Official";
     if (officeLine) {
-      const officeMatch = officeLine.match(/Office Won:\s*(.+)/);
+      const officeMatch = officeLine.match(/Office(?:\/race)?:\s*(.+)/i);
       if (officeMatch) office = officeMatch[1].trim();
     }
 
-    // Extract state
-    const stateLine = lines.find(line => line.includes("State:"));
+    // Extract state - look for "State:" or "State/location:"
+    const stateLine = lines.find(line => line.match(/State:|Location:/i));
     let state = "Unknown";
     if (stateLine) {
-      const stateMatch = stateLine.match(/State:\s*(.+)/);
+      const stateMatch = stateLine.match(/(?:State|Location):\s*(.+)/i);
       if (stateMatch) state = stateMatch[1].trim();
     }
 
-    // Extract election date
-    const dateLine = lines.find(line => line.includes("Election Date:"));
-    let electionDate = "Recent";
+    // Extract election date or current status
+    let electionDate = "Current";
+    const dateLine = lines.find(line => line.match(/When won:|Election Date:|Current status:|What's happening/i));
     if (dateLine) {
-      const dateMatch = dateLine.match(/Election Date:\s*(.+)/);
+      const dateMatch = dateLine.match(/(?:When won|Election Date|Current status|What's happening):\s*(.+)/i);
       if (dateMatch) electionDate = dateMatch[1].trim();
     }
 
-    // Extract vote percentage
-    const voteLine = lines.find(line => line.includes("Vote Percentage:"));
-    let votePercentage = Math.floor(Math.random() * 30) + 50;
+    // Look for vote percentage in any line
+    let votePercentage = undefined;
+    const voteLine = lines.find(line => line.match(/\d+%/));
     if (voteLine) {
       const voteMatch = voteLine.match(/(\d+)%/);
       if (voteMatch) votePercentage = parseInt(voteMatch[1]);
@@ -198,16 +198,18 @@ export async function getTrendingCandidatesServer(): Promise<any[]> {
 
 export async function getRecentWinnersServer(): Promise<any[]> {
   try {
+    const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const response = await callPerplexityAPI(
-      `What are the current hottest political races and latest election updates happening RIGHT NOW in the United States? List 5 races with real-time developments. For each provide:
-- Candidate names (leading candidates or recent winners if race just concluded)
-- Political party
-- Office/race (Governor, Senate, House, Mayor, etc.)
-- State/location
-- Current status (leading, projected winner, or just won)
-- Latest update or percentage if available
+      `Today is ${today}. What are the TOP 5 most talked about political races, elections, or political news stories happening RIGHT NOW in the United States today?
 
-Focus on active races with breaking news, close races, or elections that just happened in the past week. This should be TODAY's political news, not historical data.`
+For EACH of the 5 stories, provide:
+- Candidate name (or main politician in the news)
+- Political party
+- Office (Governor, Senate, House, Mayor, etc.)
+- State
+- What's happening NOW (leading in polls, projected winner, just won, controversy, etc.)
+
+IMPORTANT: Give me TODAY's breaking political news, NOT historical elections from 2022-2024. Focus on what's trending in politics THIS WEEK.`
     );
 
     console.log("[Server] Live Races API Response:", response.content);
