@@ -199,23 +199,24 @@ export async function getTrendingCandidatesServer(): Promise<any[]> {
 export async function getRecentWinnersServer(): Promise<any[]> {
   try {
     const response = await callPerplexityAPI(
-      `What are the most recent significant political election results in the United States? List 5 winners from elections that have already occurred (not upcoming elections). For each winner provide:
-- Full name
+      `What are the current hottest political races and latest election updates happening RIGHT NOW in the United States? List 5 races with real-time developments. For each provide:
+- Candidate names (leading candidates or recent winners if race just concluded)
 - Political party
-- Office they won
-- State
-- When they won (month/year)
+- Office/race (Governor, Senate, House, Mayor, etc.)
+- State/location
+- Current status (leading, projected winner, or just won)
+- Latest update or percentage if available
 
-Include races like Governor, Senate, House, or Mayor. Focus on the most recent completed elections, even if from late 2024 or earlier in 2025.`
+Focus on active races with breaking news, close races, or elections that just happened in the past week. This should be TODAY's political news, not historical data.`
     );
 
-    console.log("[Server] Winners API Response:", response.content);
+    console.log("[Server] Live Races API Response:", response.content);
     const parsed = parseWinnersFromResponse(response.content);
-    console.log("[Server] Parsed winners:", parsed);
+    console.log("[Server] Parsed live races:", parsed);
 
     return parsed.length >= 2 ? parsed : getMockWinners();
   } catch (error) {
-    console.error("[Server] Error fetching recent winners:", error);
+    console.error("[Server] Error fetching live races:", error);
     return getMockWinners();
   }
 }

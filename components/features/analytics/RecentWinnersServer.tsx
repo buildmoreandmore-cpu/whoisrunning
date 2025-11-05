@@ -25,9 +25,9 @@ export async function RecentWinnersServer() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="h-5 w-5 text-primary" />
-          Recent Winners
+          Live Race Updates
         </CardTitle>
-        <CardDescription>Latest election results</CardDescription>
+        <CardDescription>Breaking election news and current races</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
