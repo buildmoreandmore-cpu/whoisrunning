@@ -2,6 +2,7 @@
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
   "/api/perplexity/research/route": "/api/perplexity/research",
+  "/api/test-perplexity/route": "/api/test-perplexity",
   "/candidate/[id]/page": "/candidate/[id]",
   "/page": "/"
 }

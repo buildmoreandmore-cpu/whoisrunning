@@ -53,6 +53,12 @@
       "regex": "^/api/perplexity/research(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/perplexity/research(?:/)?$"
+    },
+    {
+      "page": "/api/test-perplexity",
+      "regex": "^/api/test\\-perplexity(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/test\\-perplexity(?:/)?$"
     }
   ],
   "dataRoutes": [],
