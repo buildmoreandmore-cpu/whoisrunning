@@ -138,7 +138,10 @@ function parseWinnersFromResponse(content: string): any[] {
     let office = "Elected Official";
     if (officeLine) {
       const officeMatch = officeLine.match(/Office(?:\/race)?:\s*(.+)/i);
-      if (officeMatch) office = officeMatch[1].trim();
+      if (officeMatch) {
+        // Strip markdown formatting (**, *, etc.)
+        office = officeMatch[1].trim().replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      }
     }
 
     // Extract state - look for "State:" or "State/location:"
@@ -146,7 +149,10 @@ function parseWinnersFromResponse(content: string): any[] {
     let state = "Unknown";
     if (stateLine) {
       const stateMatch = stateLine.match(/(?:State|Location):\s*(.+)/i);
-      if (stateMatch) state = stateMatch[1].trim();
+      if (stateMatch) {
+        // Strip markdown formatting
+        state = stateMatch[1].trim().replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      }
     }
 
     // Extract election date or current status
@@ -154,7 +160,10 @@ function parseWinnersFromResponse(content: string): any[] {
     const dateLine = lines.find(line => line.match(/When won:|Election Date:|Current status:|What's happening/i));
     if (dateLine) {
       const dateMatch = dateLine.match(/(?:When won|Election Date|Current status|What's happening):\s*(.+)/i);
-      if (dateMatch) electionDate = dateMatch[1].trim();
+      if (dateMatch) {
+        // Strip markdown formatting
+        electionDate = dateMatch[1].trim().replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      }
     }
 
     // Look for vote percentage in any line
