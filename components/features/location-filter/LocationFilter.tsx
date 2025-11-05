@@ -42,9 +42,34 @@ export function LocationFilter() {
   const [loadingCounties, setLoadingCounties] = useState(false);
   const [loadingCities, setLoadingCities] = useState(false);
 
-  // Fetch counties when state is selected
+  // Fetch cities when state is selected
   useEffect(() => {
     if (!selectedState) {
+      setCities([]);
+      return;
+    }
+
+    const fetchCities = async () => {
+      setLoadingCities(true);
+      try {
+        const response = await fetch(`/api/location/cities?state=${selectedState}`);
+        if (response.ok) {
+          const data = await response.json();
+          setCities(data.cities || []);
+        }
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      } finally {
+        setLoadingCities(false);
+      }
+    };
+
+    fetchCities();
+  }, [selectedState]);
+
+  // Fetch counties when state and city are selected
+  useEffect(() => {
+    if (!selectedState || !selectedCity) {
       setCounties([]);
       return;
     }
@@ -65,34 +90,7 @@ export function LocationFilter() {
     };
 
     fetchCounties();
-  }, [selectedState]);
-
-  // Fetch cities when state and county are selected
-  useEffect(() => {
-    if (!selectedState || !selectedCounty) {
-      setCities([]);
-      return;
-    }
-
-    const fetchCities = async () => {
-      setLoadingCities(true);
-      try {
-        const countyData = counties.find(c => c.name === selectedCounty);
-        const countyFips = countyData?.fips || "";
-        const response = await fetch(`/api/location/cities?state=${selectedState}&county=${countyFips}`);
-        if (response.ok) {
-          const data = await response.json();
-          setCities(data.cities || []);
-        }
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-      } finally {
-        setLoadingCities(false);
-      }
-    };
-
-    fetchCities();
-  }, [selectedState, selectedCounty, counties]);
+  }, [selectedState, selectedCity]);
 
   const hasActiveFilters = selectedState || selectedCounty || selectedCity;
 
@@ -137,35 +135,6 @@ export function LocationFilter() {
           </Select>
         </div>
 
-        {/* County Selector */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">
-            County
-          </label>
-          <Select
-            value={selectedCounty || ""}
-            onValueChange={(value) => setSelectedCounty(value || null)}
-            disabled={!selectedState || loadingCounties}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder={loadingCounties ? "Loading..." : "Select County"} />
-            </SelectTrigger>
-            <SelectContent>
-              {loadingCounties ? (
-                <div className="flex items-center justify-center p-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                </div>
-              ) : (
-                counties.map((county) => (
-                  <SelectItem key={county.fips} value={county.name}>
-                    {county.name}
-                  </SelectItem>
-                ))
-              )}
-            </SelectContent>
-          </Select>
-        </div>
-
         {/* City Selector */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-muted-foreground">
@@ -174,7 +143,7 @@ export function LocationFilter() {
           <Select
             value={selectedCity || ""}
             onValueChange={(value) => setSelectedCity(value || null)}
-            disabled={!selectedCounty || loadingCities}
+            disabled={!selectedState || loadingCities}
           >
             <SelectTrigger>
               <SelectValue placeholder={loadingCities ? "Loading..." : "Select City"} />
@@ -188,6 +157,35 @@ export function LocationFilter() {
                 cities.map((city) => (
                   <SelectItem key={city.fips} value={city.name}>
                     {city.name}
+                  </SelectItem>
+                ))
+              )}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* County Selector */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-muted-foreground">
+            County
+          </label>
+          <Select
+            value={selectedCounty || ""}
+            onValueChange={(value) => setSelectedCounty(value || null)}
+            disabled={!selectedCity || loadingCounties}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder={loadingCounties ? "Loading..." : "Select County"} />
+            </SelectTrigger>
+            <SelectContent>
+              {loadingCounties ? (
+                <div className="flex items-center justify-center p-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </div>
+              ) : (
+                counties.map((county) => (
+                  <SelectItem key={county.fips} value={county.name}>
+                    {county.name}
                   </SelectItem>
                 ))
               )}

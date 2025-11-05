@@ -14,12 +14,12 @@ export default async function Home() {
       {/* Header */}
       <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-start">
             <Image
-              src="/logo.png"
+              src="/logo-transparent.png"
               alt="Who Is Running Logo"
-              width={80}
-              height={80}
+              width={150}
+              height={60}
               className="object-contain"
               priority
             />

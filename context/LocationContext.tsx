@@ -30,16 +30,8 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => ({
       ...prev,
       selectedState: newState,
-      selectedCounty: null, // Reset dependent filters (State → County → City)
-      selectedCity: null,
-    }));
-  }, []);
-
-  const setSelectedCounty = useCallback((county: string | null) => {
-    setState((prev) => ({
-      ...prev,
-      selectedCounty: county,
-      selectedCity: null, // Reset dependent filter (County → City)
+      selectedCity: null, // Reset dependent filters (State → City → County)
+      selectedCounty: null,
     }));
   }, []);
 
@@ -47,6 +39,14 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => ({
       ...prev,
       selectedCity: city,
+      selectedCounty: null, // Reset dependent filter (City → County)
+    }));
+  }, []);
+
+  const setSelectedCounty = useCallback((county: string | null) => {
+    setState((prev) => ({
+      ...prev,
+      selectedCounty: county,
     }));
   }, []);
 
