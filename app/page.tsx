@@ -4,6 +4,10 @@ import { RecentWinnersServer } from "@/components/features/analytics/RecentWinne
 import { SearchBar } from "@/components/features/candidate/SearchBar";
 import Image from "next/image";
 
+// Force dynamic rendering to fetch fresh data on every request
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
