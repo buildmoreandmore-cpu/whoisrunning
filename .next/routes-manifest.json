@@ -49,6 +49,18 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/api/location/cities",
+      "regex": "^/api/location/cities(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/location/cities(?:/)?$"
+    },
+    {
+      "page": "/api/location/counties",
+      "regex": "^/api/location/counties(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/location/counties(?:/)?$"
+    },
+    {
       "page": "/api/perplexity/research",
       "regex": "^/api/perplexity/research(?:/)?$",
       "routeKeys": {},

@@ -199,7 +199,14 @@ export async function getTrendingCandidatesServer(): Promise<any[]> {
 export async function getRecentWinnersServer(): Promise<any[]> {
   try {
     const response = await callPerplexityAPI(
-      `List 5 recent winners of significant political races in the United States from the past 6 months. Include their name, party, the office they won, state, election date, and vote percentage if available.`
+      `What are the most recent significant political election results in the United States? List 5 winners from elections that have already occurred (not upcoming elections). For each winner provide:
+- Full name
+- Political party
+- Office they won
+- State
+- When they won (month/year)
+
+Include races like Governor, Senate, House, or Mayor. Focus on the most recent completed elections, even if from late 2024 or earlier in 2025.`
     );
 
     console.log("[Server] Winners API Response:", response.content);

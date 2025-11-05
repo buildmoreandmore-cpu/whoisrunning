@@ -65,6 +65,24 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../app/api/location/cities/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/location/cities">> = Specific
+  const handler = {} as typeof import("../../app/api/location/cities/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../app/api/location/counties/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/location/counties">> = Specific
+  const handler = {} as typeof import("../../app/api/location/counties/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../app/api/perplexity/research/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/perplexity/research">> = Specific
