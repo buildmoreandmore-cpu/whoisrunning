@@ -81,7 +81,17 @@ export async function getTrendingCandidates(): Promise<any[]> {
       query: `List the top 5 most talked about political candidates in the news right now in the United States. Include their name, party, office they're running for or currently hold, state, and why they're trending.`,
     });
 
-    return parseTrendingFromResponse(response.content);
+    console.log("Trending API Response:", response.content);
+    const parsed = parseTrendingFromResponse(response.content);
+    console.log("Parsed trending:", parsed);
+
+    // If parsing returns less than 2 results, use mock data
+    if (parsed.length < 2) {
+      console.warn("Insufficient trending data, using mock");
+      return getMockTrending();
+    }
+
+    return parsed;
   } catch (error) {
     console.error("Error fetching trending candidates:", error);
     // Return mock data as fallback
@@ -95,7 +105,17 @@ export async function getRecentWinners(): Promise<any[]> {
       query: `List the most recent election winners in the United States (within the last 3 months). Include candidate name, party, office won, state/location, election date, and vote percentage if available.`,
     });
 
-    return parseWinnersFromResponse(response.content);
+    console.log("Winners API Response:", response.content);
+    const parsed = parseWinnersFromResponse(response.content);
+    console.log("Parsed winners:", parsed);
+
+    // If parsing returns less than 2 results, use mock data
+    if (parsed.length < 2) {
+      console.warn("Insufficient winners data, using mock");
+      return getMockWinners();
+    }
+
+    return parsed;
   } catch (error) {
     console.error("Error fetching recent winners:", error);
     // Return mock data as fallback
@@ -321,29 +341,67 @@ function extractKeyPositions(content: string): string[] {
 }
 
 function parseTrendingFromResponse(content: string): any[] {
-  // Simple parsing for trending candidates
+  // Parse trending candidates from AI response
   const trending: any[] = [];
   const lines = content.split("\n");
 
-  lines.forEach((line) => {
-    if (line.match(/^\d+\.|^-|^•/)) {
-      const nameMatch = line.match(/(?:\d+\.|^-|^•)\s*(.+?)(?:\s*-|\s*\(|$)/);
-      if (nameMatch) {
+  lines.forEach((line, index) => {
+    // Match various list formats: "1.", "1)", "-", "•", "**1.**", etc.
+    const listMatch = line.match(/^(?:\*\*)?(?:\d+[\.)]\s*|[-•]\s*|\*\s*)(?:\*\*)?(.+)/);
+    if (listMatch) {
+      const restOfLine = listMatch[1];
+
+      // Try to extract name (usually before a dash, colon, parenthesis, or comma)
+      const nameMatch = restOfLine.match(/^([^-:(,\n]+)/);
+      if (nameMatch && nameMatch[1].trim().length > 3) {
+        const name = nameMatch[1].trim().replace(/\*\*/g, ''); // Remove markdown
+
+        // Extract office/position if mentioned
+        let office = "Political Office";
+        const officePatterns = [
+          /(?:Senator|Representative|Governor|Mayor|President|Congressman|Congresswoman|House|Senate)/i,
+          /running for\s+([^,\n]+)/i,
+          /(?:candidate for|seeking)\s+([^,\n]+)/i
+        ];
+
+        for (const pattern of officePatterns) {
+          const match = restOfLine.match(pattern);
+          if (match) {
+            office = match[0];
+            break;
+          }
+        }
+
+        // Extract state if mentioned
+        const stateMatch = restOfLine.match(/\b(Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|New Hampshire|New Jersey|New Mexico|New York|North Carolina|North Dakota|Ohio|Oklahoma|Oregon|Pennsylvania|Rhode Island|South Carolina|South Dakota|Tennessee|Texas|Utah|Vermont|Virginia|Washington|West Virginia|Wisconsin|Wyoming)\b/i);
+        const state = stateMatch ? stateMatch[1] : "United States";
+
+        // Determine party
+        let party: "Democrat" | "Republican" | "Independent" | "Other" = "Other";
+        if (restOfLine.match(/\b(Democrat|Democratic|D\)|\(D\))\b/i)) {
+          party = "Democrat";
+        } else if (restOfLine.match(/\b(Republican|GOP|R\)|\(R\))\b/i)) {
+          party = "Republican";
+        } else if (restOfLine.match(/\b(Independent|Ind\.|\(I\))\b/i)) {
+          party = "Independent";
+        }
+
         trending.push({
-          id: generateCandidateId(nameMatch[1]),
-          name: nameMatch[1].trim(),
-          office: "Political Office",
-          state: "United States",
-          party: line.includes("Democrat") ? "Democrat" : line.includes("Republican") ? "Republican" : "Other",
-          searchCount: Math.floor(Math.random() * 20000) + 5000,
-          percentageChange: Math.floor(Math.random() * 50) + 10,
+          id: generateCandidateId(name),
+          name: name,
+          office: office,
+          state: state,
+          party: party,
+          searchCount: Math.floor(Math.random() * 15000) + 5000,
+          percentageChange: Math.floor(Math.random() * 40) + 5,
           trend: "up" as const,
         });
       }
     }
   });
 
-  return trending.length > 0 ? trending.slice(0, 5) : getMockTrending();
+  console.log(`Parsed ${trending.length} trending candidates`);
+  return trending.slice(0, 5);
 }
 
 function parseWinnersFromResponse(content: string): any[] {
@@ -351,23 +409,75 @@ function parseWinnersFromResponse(content: string): any[] {
   const lines = content.split("\n");
 
   lines.forEach((line) => {
-    if (line.match(/^\d+\.|^-|^•/)) {
-      const nameMatch = line.match(/(?:\d+\.|^-|^•)\s*(.+?)(?:\s*-|\s*\(|$)/);
-      if (nameMatch) {
+    // Match various list formats
+    const listMatch = line.match(/^(?:\*\*)?(?:\d+[\.)]\s*|[-•]\s*|\*\s*)(?:\*\*)?(.+)/);
+    if (listMatch) {
+      const restOfLine = listMatch[1];
+
+      // Try to extract name
+      const nameMatch = restOfLine.match(/^([^-:(,\n]+)/);
+      if (nameMatch && nameMatch[1].trim().length > 3) {
+        const name = nameMatch[1].trim().replace(/\*\*/g, '');
+
+        // Extract office
+        let office = "Elected Office";
+        const officePatterns = [
+          /(?:won|elected to|won the)\s+([^,\n]+?)(?:\s+in|\s+for|\s+race|$)/i,
+          /(?:Senator|Representative|Governor|Mayor|President|Congressman|Congresswoman)/i,
+        ];
+
+        for (const pattern of officePatterns) {
+          const match = restOfLine.match(pattern);
+          if (match) {
+            office = match[1] || match[0];
+            break;
+          }
+        }
+
+        // Extract state
+        const stateMatch = restOfLine.match(/\b(Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|New Hampshire|New Jersey|New Mexico|New York|North Carolina|North Dakota|Ohio|Oklahoma|Oregon|Pennsylvania|Rhode Island|South Carolina|South Dakota|Tennessee|Texas|Utah|Vermont|Virginia|Washington|West Virginia|Wisconsin|Wyoming)\b/i);
+        const state = stateMatch ? stateMatch[1] : "United States";
+
+        // Determine party
+        let party: "Democrat" | "Republican" | "Independent" | "Other" = "Other";
+        if (restOfLine.match(/\b(Democrat|Democratic|D\)|\(D\))\b/i)) {
+          party = "Democrat";
+        } else if (restOfLine.match(/\b(Republican|GOP|R\)|\(R\))\b/i)) {
+          party = "Republican";
+        } else if (restOfLine.match(/\b(Independent|Ind\.|\(I\))\b/i)) {
+          party = "Independent";
+        }
+
+        // Try to extract date
+        const dateMatch = restOfLine.match(/(?:November|Oct|Sep|Aug|July|June|May|April|Mar|Feb|Jan)\s+\d{1,2}(?:,\s*\d{4})?/i);
+        let electionDate = new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        if (dateMatch) {
+          try {
+            electionDate = new Date(dateMatch[0]).toISOString().split('T')[0];
+          } catch (e) {
+            // Use default date if parsing fails
+          }
+        }
+
+        // Try to extract vote percentage
+        const percentMatch = restOfLine.match(/(\d+(?:\.\d+)?)\s*%/);
+        const votePercentage = percentMatch ? parseFloat(percentMatch[1]) : 50 + Math.random() * 15;
+
         winners.push({
-          id: generateCandidateId(nameMatch[1]),
-          candidateName: nameMatch[1].trim(),
-          office: "Elected Office",
-          state: "United States",
-          party: line.includes("Democrat") ? "Democrat" : line.includes("Republican") ? "Republican" : "Other",
-          electionDate: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          votePercentage: 50 + Math.random() * 20,
+          id: generateCandidateId(name),
+          candidateName: name,
+          office: office,
+          state: state,
+          party: party,
+          electionDate: electionDate,
+          votePercentage: votePercentage,
         });
       }
     }
   });
 
-  return winners.length > 0 ? winners.slice(0, 4) : getMockWinners();
+  console.log(`Parsed ${winners.length} recent winners`);
+  return winners.slice(0, 4);
 }
 
 function generateCandidateId(name: string): string {
