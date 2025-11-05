@@ -75,29 +75,6 @@ export function LocationFilter() {
           </Select>
         </div>
 
-        {/* County Selector */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">
-            County
-          </label>
-          <Select
-            value={selectedCounty || ""}
-            onValueChange={(value) => setSelectedCounty(value || null)}
-            disabled={!selectedState}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select County" />
-            </SelectTrigger>
-            <SelectContent>
-              {counties.map((county) => (
-                <SelectItem key={county} value={county}>
-                  {county}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
         {/* City Selector */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-muted-foreground">
@@ -106,7 +83,7 @@ export function LocationFilter() {
           <Select
             value={selectedCity || ""}
             onValueChange={(value) => setSelectedCity(value || null)}
-            disabled={!selectedCounty}
+            disabled={!selectedState}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select City" />
@@ -115,6 +92,29 @@ export function LocationFilter() {
               {cities.map((city) => (
                 <SelectItem key={city} value={city}>
                   {city}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* County Selector */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-muted-foreground">
+            County
+          </label>
+          <Select
+            value={selectedCounty || ""}
+            onValueChange={(value) => setSelectedCounty(value || null)}
+            disabled={!selectedCity}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select County" />
+            </SelectTrigger>
+            <SelectContent>
+              {counties.map((county) => (
+                <SelectItem key={county} value={county}>
+                  {county}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -129,14 +129,14 @@ export function LocationFilter() {
               {US_STATES.find((s) => s.code === selectedState)?.name}
             </div>
           )}
-          {selectedCounty && (
-            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm">
-              {selectedCounty}
-            </div>
-          )}
           {selectedCity && (
             <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm">
               {selectedCity}
+            </div>
+          )}
+          {selectedCounty && (
+            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm">
+              {selectedCounty}
             </div>
           )}
         </div>
