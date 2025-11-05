@@ -2,6 +2,7 @@ import { TrendingCandidates } from "@/components/features/analytics/TrendingCand
 import { LocationFilter } from "@/components/features/location-filter/LocationFilter";
 import { RecentWinners } from "@/components/features/analytics/RecentWinners";
 import { SearchBar } from "@/components/features/candidate/SearchBar";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -10,10 +11,13 @@ export default function Home() {
       <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-center">
-            <img
+            <Image
               src="/logo.png"
               alt="Who Is Running Logo"
-              className="h-20 w-20 object-contain"
+              width={80}
+              height={80}
+              className="object-contain"
+              priority
             />
           </div>
         </div>
