@@ -1,0 +1,78 @@
+import { TrendingCandidates } from "@/components/features/analytics/TrendingCandidates";
+import { LocationFilter } from "@/components/features/location-filter/LocationFilter";
+import { RecentWinners } from "@/components/features/analytics/RecentWinners";
+import { SearchBar } from "@/components/features/candidate/SearchBar";
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Header */}
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center gap-4">
+            <img
+              src="/logo.png"
+              alt="Who Is Running Logo"
+              className="h-16 w-16 object-contain"
+            />
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Who Is Running?
+              </h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                Political Transparency for Everyone
+              </p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <section className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">
+            Discover Who&apos;s Running in Your Area
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+            Get transparent, unbiased information about political candidates with resources,
+            voting records, quotes, and ideological positions.
+          </p>
+          <SearchBar />
+        </section>
+
+        {/* Location Filter */}
+        <section className="mb-12">
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-xl font-semibold mb-4">Browse by Location</h3>
+            <LocationFilter />
+          </div>
+        </section>
+
+        {/* Trending Section */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <TrendingCandidates />
+          <RecentWinners />
+        </section>
+
+        {/* CTA Section */}
+        <section className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white text-center">
+          <h3 className="text-2xl font-bold mb-4">
+            Stay Informed, Make Better Decisions
+          </h3>
+          <p className="mb-6 max-w-2xl mx-auto">
+            Our platform uses AI-powered research to bring you comprehensive,
+            fact-checked information about every candidate running for office.
+          </p>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t mt-16 py-8 bg-white/50">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+          <p>&copy; 2025 WhoIsRunning.org - Political Transparency Platform</p>
+          <p className="mt-2">Information powered by Perplexity AI</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
