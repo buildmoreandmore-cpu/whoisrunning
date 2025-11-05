@@ -60,45 +60,52 @@ async function callPerplexityAPI(query: string): Promise<PerplexityResponse> {
 
 function parseTrendingFromResponse(content: string): any[] {
   const trending: any[] = [];
-  const lines = content.split("\n");
 
-  lines.forEach((line) => {
-    const listMatch = line.match(/^(?:\*\*)?(?:\d+[\.)]\s*|[-•]\s*|\*\s*)(?:\*\*)?(.+)/);
-    if (listMatch) {
-      const restOfLine = listMatch[1];
-      const nameMatch = restOfLine.match(/^([^-:(,\n]+)/);
+  // Split into candidate blocks (numbered items)
+  const candidateBlocks = content.split(/\n\d+\.\s+\*\*/).slice(1);
 
-      if (nameMatch && nameMatch[1].trim().length > 3) {
-        const name = nameMatch[1].trim().replace(/\*\*/g, "");
+  candidateBlocks.forEach((block) => {
+    const lines = block.split("\n");
 
-        const officeMatch = restOfLine.match(/(?:for|running for|seeking|holds?)\s+([^,\n(]+)/i);
-        const office = officeMatch
-          ? officeMatch[1].trim().replace(/\*/g, "")
-          : "Unknown Office";
+    // Extract name from first line
+    const nameMatch = lines[0]?.match(/^([^*]+)\*\*/);
+    if (!nameMatch) return;
+    const name = nameMatch[1].trim();
 
-        const stateMatch = restOfLine.match(/(?:in|from|of)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
-        const state = stateMatch ? stateMatch[1].trim() : "Unknown";
-
-        const partyMatch = restOfLine.match(/\(([DR])\)|\b(Democrat|Republican|Democratic|GOP)\b/i);
-        let party = "Independent";
-        if (partyMatch) {
-          const p = (partyMatch[1] || partyMatch[2]).toLowerCase();
-          if (p.startsWith("d")) party = "Democrat";
-          else if (p.startsWith("r") || p === "gop") party = "Republican";
-        }
-
-        trending.push({
-          id: name.toLowerCase().replace(/\s+/g, "-"),
-          name: name,
-          office: office,
-          state: state,
-          party: party,
-          searchCount: Math.floor(Math.random() * 15000) + 5000,
-          percentageChange: Math.floor(Math.random() * 40) + 5,
-          trend: "up" as const,
-        });
-      }
+    // Extract party
+    const partyLine = lines.find(line => line.includes("Party:"));
+    let party = "Independent";
+    if (partyLine) {
+      if (partyLine.includes("Democratic") || partyLine.includes("Democrat")) party = "Democrat";
+      else if (partyLine.includes("Republican") || partyLine.includes("GOP")) party = "Republican";
     }
+
+    // Extract office
+    const officeLine = lines.find(line => line.includes("Office:"));
+    let office = "Unknown Office";
+    if (officeLine) {
+      const officeMatch = officeLine.match(/Office:\s*(.+)/);
+      if (officeMatch) office = officeMatch[1].trim();
+    }
+
+    // Extract state
+    const stateLine = lines.find(line => line.includes("State:"));
+    let state = "Unknown";
+    if (stateLine) {
+      const stateMatch = stateLine.match(/State:\s*(.+)/);
+      if (stateMatch) state = stateMatch[1].trim();
+    }
+
+    trending.push({
+      id: name.toLowerCase().replace(/\s+/g, "-"),
+      name: name,
+      office: office,
+      state: state,
+      party: party,
+      searchCount: Math.floor(Math.random() * 15000) + 5000,
+      percentageChange: Math.floor(Math.random() * 40) + 5,
+      trend: "up" as const,
+    });
   });
 
   return trending.slice(0, 5);
@@ -106,47 +113,67 @@ function parseTrendingFromResponse(content: string): any[] {
 
 function parseWinnersFromResponse(content: string): any[] {
   const winners: any[] = [];
-  const lines = content.split("\n");
 
-  lines.forEach((line) => {
-    const listMatch = line.match(/^(?:\*\*)?(?:\d+[\.)]\s*|[-•]\s*|\*\s*)(?:\*\*)?(.+)/);
-    if (listMatch) {
-      const restOfLine = listMatch[1];
-      const nameMatch = restOfLine.match(/^([^-:(,\n]+)/);
+  // Split into candidate blocks (numbered items)
+  const candidateBlocks = content.split(/\n\d+\.\s+\*\*/).slice(1);
 
-      if (nameMatch && nameMatch[1].trim().length > 3) {
-        const name = nameMatch[1].trim().replace(/\*\*/g, "");
+  candidateBlocks.forEach((block) => {
+    const lines = block.split("\n");
 
-        const officeMatch = restOfLine.match(/(?:won|elected to|victory in)\s+([^,\n(]+)/i);
-        const office = officeMatch
-          ? officeMatch[1].trim().replace(/\*/g, "")
-          : "Unknown Office";
+    // Extract name from first line
+    const nameMatch = lines[0]?.match(/^([^*]+)\*\*/);
+    if (!nameMatch) return;
+    const name = nameMatch[1].trim();
 
-        const stateMatch = restOfLine.match(/(?:in|from|of)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
-        const state = stateMatch ? stateMatch[1].trim() : "Unknown";
-
-        const partyMatch = restOfLine.match(/\(([DR])\)|\b(Democrat|Republican|Democratic|GOP)\b/i);
-        let party = "Independent";
-        if (partyMatch) {
-          const p = (partyMatch[1] || partyMatch[2]).toLowerCase();
-          if (p.startsWith("d")) party = "Democrat";
-          else if (p.startsWith("r") || p === "gop") party = "Republican";
-        }
-
-        const dateMatch = restOfLine.match(/(?:on|in)\s+((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}|\d{4})/i);
-        const electionDate = dateMatch ? dateMatch[1] : "Recent";
-
-        winners.push({
-          id: name.toLowerCase().replace(/\s+/g, "-"),
-          name: name,
-          office: office,
-          state: state,
-          party: party,
-          electionDate: electionDate,
-          votePercentage: Math.floor(Math.random() * 30) + 50,
-        });
-      }
+    // Extract party
+    const partyLine = lines.find(line => line.includes("Party:"));
+    let party = "Independent";
+    if (partyLine) {
+      if (partyLine.includes("Democratic") || partyLine.includes("Democrat")) party = "Democrat";
+      else if (partyLine.includes("Republican") || partyLine.includes("GOP")) party = "Republican";
     }
+
+    // Extract office
+    const officeLine = lines.find(line => line.includes("Office Won:"));
+    let office = "Unknown Office";
+    if (officeLine) {
+      const officeMatch = officeLine.match(/Office Won:\s*(.+)/);
+      if (officeMatch) office = officeMatch[1].trim();
+    }
+
+    // Extract state
+    const stateLine = lines.find(line => line.includes("State:"));
+    let state = "Unknown";
+    if (stateLine) {
+      const stateMatch = stateLine.match(/State:\s*(.+)/);
+      if (stateMatch) state = stateMatch[1].trim();
+    }
+
+    // Extract election date
+    const dateLine = lines.find(line => line.includes("Election Date:"));
+    let electionDate = "Recent";
+    if (dateLine) {
+      const dateMatch = dateLine.match(/Election Date:\s*(.+)/);
+      if (dateMatch) electionDate = dateMatch[1].trim();
+    }
+
+    // Extract vote percentage
+    const voteLine = lines.find(line => line.includes("Vote Percentage:"));
+    let votePercentage = Math.floor(Math.random() * 30) + 50;
+    if (voteLine) {
+      const voteMatch = voteLine.match(/(\d+)%/);
+      if (voteMatch) votePercentage = parseInt(voteMatch[1]);
+    }
+
+    winners.push({
+      id: name.toLowerCase().replace(/\s+/g, "-"),
+      name: name,
+      office: office,
+      state: state,
+      party: party,
+      electionDate: electionDate,
+      votePercentage: votePercentage,
+    });
   });
 
   return winners.slice(0, 5);
