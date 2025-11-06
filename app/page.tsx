@@ -172,38 +172,39 @@ export default async function Home() {
 
         {/* Community Section */}
         <section className="mb-12">
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-8 border-l-4 border-blue-600">
-            <div className="flex items-start gap-6">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 sm:p-6 md:p-8 border-l-4 border-blue-600">
+            <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
               <div className="flex-shrink-0">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600">
-                  <Users className="h-8 w-8 text-white" />
+                <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-blue-600">
+                  <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-3 text-gray-900">
+              <div className="flex-1 w-full">
+                <h3 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900">
                   Community-Powered Accuracy
                 </h3>
-                <p className="text-lg text-gray-700 mb-4">
+                <p className="text-base sm:text-lg text-gray-700 mb-4">
                   Found an error? Outdated info? You can help. Every correction you submit
                   helps thousands of voters make informed decisions.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="bg-white rounded-lg p-4 text-center">
-                    <p className="text-3xl font-bold text-blue-600">247</p>
-                    <p className="text-sm text-gray-600">Community Corrections</p>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
+                  <div className="bg-white rounded-lg p-3 sm:p-4 text-center">
+                    <p className="text-2xl sm:text-3xl font-bold text-blue-600">247</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Community Corrections</p>
                   </div>
-                  <div className="bg-white rounded-lg p-4 text-center">
-                    <p className="text-3xl font-bold text-blue-600">24hr</p>
-                    <p className="text-sm text-gray-600">Avg Response Time</p>
+                  <div className="bg-white rounded-lg p-3 sm:p-4 text-center">
+                    <p className="text-2xl sm:text-3xl font-bold text-blue-600">24hr</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Avg Response Time</p>
                   </div>
-                  <div className="bg-white rounded-lg p-4 text-center">
-                    <p className="text-3xl font-bold text-blue-600">98%</p>
-                    <p className="text-sm text-gray-600">Data Accuracy</p>
+                  <div className="bg-white rounded-lg p-3 sm:p-4 text-center">
+                    <p className="text-2xl sm:text-3xl font-bold text-blue-600">98%</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Data Accuracy</p>
                   </div>
                 </div>
-                <Button asChild>
+                <Button asChild className="w-full sm:w-auto">
                   <Link href="/community">
-                    Learn How Community Corrections Work
+                    <span className="hidden sm:inline">Learn How Community Corrections Work</span>
+                    <span className="sm:hidden">Learn How It Works</span>
                   </Link>
                 </Button>
               </div>
