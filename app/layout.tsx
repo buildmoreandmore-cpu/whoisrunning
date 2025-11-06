@@ -6,8 +6,8 @@ import { LocationProvider } from "@/context/LocationContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Who Is Running? - Political Transparency Platform",
-  description: "Discover who's running for office in your area. Get bullet point transparency on candidates with resources, videos, quotes, and political ideology.",
+  title: "WhoIsRunning.org - Stop Voting Blind",
+  description: "Know every candidate on your ballot in minutes. Free, accurate, non-partisan. Built by voters who got tired of feeling unprepared at the polls.",
 };
 
 export default function RootLayout({
