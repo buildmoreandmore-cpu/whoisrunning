@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,17 +14,24 @@ import {
 } from "@/components/ui/dialog";
 import { Heart, Users, Clock, Shield, CheckCircle2 } from "lucide-react";
 
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
+
 export function ChipInSection() {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState("");
   const [showPayment, setShowPayment] = useState(false);
   const [isRecurring, setIsRecurring] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const suggestedAmounts = [5, 15, 50, 100];
 
   const handleAmountSelect = (amount: number) => {
     setSelectedAmount(amount);
     setCustomAmount("");
+    setError(null);
   };
 
   const handleCustomAmount = (value: string) => {
@@ -35,12 +43,50 @@ export function ChipInSection() {
       setSelectedAmount(null);
       setCustomAmount(value);
     }
+    setError(null);
   };
 
-  const handleChipIn = () => {
-    if (selectedAmount && selectedAmount > 0) {
-      setShowPayment(true);
-      // TODO: Integrate with Stripe
+  const handleChipIn = async () => {
+    if (!selectedAmount || selectedAmount <= 0) return;
+
+    setProcessing(true);
+    setError(null);
+
+    try {
+      // Create checkout session
+      const response = await fetch("/api/payment/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: selectedAmount,
+          isRecurring,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
+
+      const { sessionId } = await response.json();
+
+      // Redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      if (!stripe) {
+        throw new Error("Stripe failed to load");
+      }
+
+      const { error: stripeError } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+
+      if (stripeError) {
+        throw new Error(stripeError.message);
+      }
+    } catch (err: any) {
+      console.error("Payment error:", err);
+      setError(err.message || "Payment failed. Please try again.");
+    } finally {
+      setProcessing(false);
     }
   };
 
@@ -140,22 +186,38 @@ export function ChipInSection() {
               </div>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="max-w-2xl mx-auto mb-4">
+                <div className="bg-red-100 border border-red-300 text-red-800 rounded-lg p-4 text-sm">
+                  {error}
+                </div>
+              </div>
+            )}
+
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
                 onClick={handleChipIn}
-                disabled={!selectedAmount || selectedAmount <= 0}
-                className="bg-white text-blue-600 hover:bg-blue-50 font-bold text-lg px-8 py-6"
+                disabled={!selectedAmount || selectedAmount <= 0 || processing}
+                className="bg-white text-blue-600 hover:bg-blue-50 font-bold text-lg px-8 py-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isRecurring ? "Chip In Monthly" : "Chip In Once"}
-                {selectedAmount && selectedAmount > 0 && (
-                  <span className="ml-2">${selectedAmount}</span>
+                {processing ? (
+                  "Processing..."
+                ) : (
+                  <>
+                    {isRecurring ? "Chip In Monthly" : "Chip In Once"}
+                    {selectedAmount && selectedAmount > 0 && (
+                      <span className="ml-2">${selectedAmount}</span>
+                    )}
+                  </>
                 )}
               </Button>
               <Button
                 size="lg"
                 variant="outline"
+                disabled={processing}
                 className="border-white/30 text-white hover:bg-white/10 font-semibold text-lg px-8 py-6"
               >
                 Maybe Later
@@ -179,86 +241,6 @@ export function ChipInSection() {
           </CardContent>
         </Card>
       </section>
-
-      {/* Payment Dialog */}
-      <Dialog open={showPayment} onOpenChange={setShowPayment}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>
-              Thank You for Supporting Democracy!
-            </DialogTitle>
-            <DialogDescription>
-              You&apos;re contributing ${selectedAmount}
-              {isRecurring ? "/month" : " one-time"} to keep WhoIsRunning.org
-              free and accurate for everyone.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-6 py-4">
-            {/* Placeholder for Stripe Payment Element */}
-            <div className="bg-gray-50 rounded-lg p-8 text-center border-2 border-dashed border-gray-300">
-              <p className="text-gray-600 mb-4">
-                💳 Stripe Payment Integration Coming Soon
-              </p>
-              <p className="text-sm text-gray-500">
-                We&apos;re setting up secure payment processing. Check back
-                soon!
-              </p>
-            </div>
-
-            {/* What Happens Next */}
-            <div className="space-y-3">
-              <p className="font-semibold text-gray-900">
-                What happens after you chip in:
-              </p>
-              <div className="space-y-2">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-gray-700">
-                    Your contribution helps us verify candidate data and respond
-                    to community corrections
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-gray-700">
-                    You&apos;ll get a receipt via email (tax-deductible if
-                    we&apos;re 501c3)
-                  </p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-gray-700">
-                    Optional: Join our &quot;Democracy Contributors&quot; page
-                    (with your permission)
-                  </p>
-                </div>
-                {isRecurring && (
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-700">
-                      Cancel anytime, no questions asked
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              onClick={() => setShowPayment(false)}
-              className="flex-1"
-            >
-              Go Back
-            </Button>
-            <Button className="flex-1" disabled>
-              Complete Payment (Coming Soon)
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
