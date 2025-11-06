@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { supabase } from "@/lib/supabase/client";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-10-29.clover",
@@ -48,20 +49,44 @@ export async function POST(request: NextRequest) {
       case "checkout.session.completed":
         const session = event.data.object as Stripe.Checkout.Session;
 
+        const amount = session.amount_total ? session.amount_total / 100 : 0;
+        const isRecurring = session.mode === "subscription";
+
         console.log("💰 Payment successful:", {
           sessionId: session.id,
-          amount: session.amount_total ? session.amount_total / 100 : 0,
+          amount,
           email: session.customer_email,
-          isRecurring: session.mode === "subscription",
+          isRecurring,
           customerId: session.customer,
           subscriptionId: session.subscription,
         });
 
-        // TODO: Save to database
-        // - Store contribution record
-        // - Send thank you email
-        // - Update contributor count
-        // - Add to Contributors page (if opted in)
+        // Save to database
+        try {
+          const { data, error } = await supabase
+            .from("contributions")
+            .insert({
+              email: session.customer_email,
+              amount,
+              is_recurring: isRecurring,
+              stripe_customer_id: session.customer as string,
+              stripe_session_id: session.id,
+              stripe_subscription_id: session.subscription as string | null,
+              status: "active",
+              opted_in_public: false, // User can opt in later via email
+            });
+
+          if (error) {
+            console.error("Error saving contribution to database:", error);
+          } else {
+            console.log("✅ Contribution saved to database");
+          }
+        } catch (dbError) {
+          console.error("Database error:", dbError);
+        }
+
+        // TODO: Send thank you email with opt-in link
+        // TODO: Update real-time stats
 
         break;
 

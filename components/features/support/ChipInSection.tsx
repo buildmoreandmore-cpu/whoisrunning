@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,8 +25,23 @@ export function ChipInSection() {
   const [isRecurring, setIsRecurring] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [contributorCount, setContributorCount] = useState<number>(0);
 
   const suggestedAmounts = [5, 15, 50, 100];
+
+  // Fetch contributor count on mount
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const response = await fetch("/api/stats");
+        const data = await response.json();
+        setContributorCount(data.contributorCount);
+      } catch (err) {
+        console.error("Failed to fetch stats:", err);
+      }
+    }
+    fetchStats();
+  }, []);
 
   const handleAmountSelect = (amount: number) => {
     setSelectedAmount(amount);
@@ -82,8 +97,6 @@ export function ChipInSection() {
       setProcessing(false);
     }
   };
-
-  const contributorCount = 2847; // This will be dynamic from database later
 
   return (
     <>

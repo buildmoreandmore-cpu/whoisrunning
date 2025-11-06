@@ -3,24 +3,42 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Star, TrendingUp, ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import { supabase } from "@/lib/supabase/client";
 
-export default function ContributorsPage() {
-  // This will come from database later
-  const monthlyTotal = 2847;
-  const totalRaised = 48250;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-  // Sample contributors (will be pulled from database)
-  const recentContributors = [
-    { name: "Sarah M.", location: "Atlanta, GA", amount: 50, recurring: true },
-    { name: "Michael R.", location: "Phoenix, AZ", amount: 15, recurring: false },
-    { name: "Jennifer L.", location: "Seattle, WA", amount: 25, recurring: true },
-    { name: "David K.", location: "Austin, TX", amount: 100, recurring: false },
-    { name: "Emily W.", location: "Boston, MA", amount: 20, recurring: true },
-    { name: "Anonymous", location: "Portland, OR", amount: 10, recurring: false },
-    { name: "James T.", location: "Denver, CO", amount: 50, recurring: true },
-    { name: "Maria G.", location: "Miami, FL", amount: 35, recurring: false },
-    { name: "Robert P.", location: "Chicago, IL", amount: 75, recurring: true },
-    { name: "Anonymous", location: "San Diego, CA", amount: 15, recurring: false },
+export default async function ContributorsPage() {
+  // Fetch real stats from database
+  const { data: contributions } = await supabase
+    .from("contributions")
+    .select("amount, is_recurring, created_at")
+    .eq("status", "active");
+
+  const monthlyTotal = contributions?.length || 0;
+  const totalRaised = contributions?.reduce((sum, c) => sum + Number(c.amount), 0) || 0;
+  const averageContribution = monthlyTotal > 0 ? totalRaised / monthlyTotal : 0;
+
+  // Fetch recent contributors (public only, but for now we'll show sample data since opted_in_public is false)
+  const { data: recentData } = await supabase
+    .from("contributions")
+    .select("name, location, amount, is_recurring, created_at")
+    .eq("opted_in_public", true)
+    .order("created_at", { ascending: false })
+    .limit(10);
+
+  // Sample data for display (remove when users start opting in)
+  const recentContributors = recentData && recentData.length > 0 ? recentData : [
+    { name: "Sarah M.", location: "Atlanta, GA", amount: 50, is_recurring: true },
+    { name: "Michael R.", location: "Phoenix, AZ", amount: 15, is_recurring: false },
+    { name: "Jennifer L.", location: "Seattle, WA", amount: 25, is_recurring: true },
+    { name: "David K.", location: "Austin, TX", amount: 100, is_recurring: false },
+    { name: "Emily W.", location: "Boston, MA", amount: 20, is_recurring: true },
+    { name: "Anonymous", location: "Portland, OR", amount: 10, is_recurring: false },
+    { name: "James T.", location: "Denver, CO", amount: 50, is_recurring: true },
+    { name: "Maria G.", location: "Miami, FL", amount: 35, is_recurring: false },
+    { name: "Robert P.", location: "Chicago, IL", amount: 75, is_recurring: true },
+    { name: "Anonymous", location: "San Diego, CA", amount: 15, is_recurring: false },
   ];
 
   const topContributors = [
@@ -106,7 +124,9 @@ export default function ContributorsPage() {
           <Card>
             <CardHeader className="text-center pb-2">
               <Star className="h-8 w-8 mx-auto text-yellow-500 mb-2" />
-              <CardTitle className="text-3xl font-bold">$17</CardTitle>
+              <CardTitle className="text-3xl font-bold">
+                ${averageContribution.toFixed(0)}
+              </CardTitle>
             </CardHeader>
             <CardContent className="text-center pt-0">
               <p className="text-sm text-muted-foreground">
@@ -189,7 +209,7 @@ export default function ContributorsPage() {
                       <p className="font-bold text-blue-600">
                         ${contributor.amount}
                       </p>
-                      {contributor.recurring && (
+                      {contributor.is_recurring && (
                         <p className="text-xs text-purple-600 font-medium">
                           monthly
                         </p>
