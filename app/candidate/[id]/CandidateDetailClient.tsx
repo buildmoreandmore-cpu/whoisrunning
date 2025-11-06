@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { getCandidateDetails } from "@/lib/candidate-service";
 import Link from "next/link";
+import { ReportErrorButton } from "@/components/features/community/ReportErrorButton";
 
 interface CandidateDetailClientProps {
   candidateId: string;
@@ -123,6 +124,10 @@ export function CandidateDetailClient({
                 )}
               </div>
             </div>
+            <ReportErrorButton
+              candidateId={candidateId}
+              candidateName={candidate.name}
+            />
           </div>
 
           {/* Bio */}

@@ -5,7 +5,7 @@ import { RecentWinnersServer } from "@/components/features/analytics/RecentWinne
 import { SearchBar } from "@/components/features/candidate/SearchBar";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, MapPin, TrendingUp, Award, Calculator } from "lucide-react";
+import { Search, MapPin, TrendingUp, Award, Calculator, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Force dynamic rendering to fetch fresh data on every request
@@ -164,6 +164,47 @@ export default async function Home() {
               <Calculator className="ml-2 h-5 w-5" />
             </Link>
           </Button>
+        </section>
+
+        {/* Community Section */}
+        <section className="mb-12">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-8 border-l-4 border-blue-600">
+            <div className="flex items-start gap-6">
+              <div className="flex-shrink-0">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-3 text-gray-900">
+                  Community-Powered Accuracy
+                </h3>
+                <p className="text-lg text-gray-700 mb-4">
+                  Found an error? Outdated info? You can help. Every correction you submit
+                  helps thousands of voters make informed decisions.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-3xl font-bold text-blue-600">247</p>
+                    <p className="text-sm text-gray-600">Community Corrections</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-3xl font-bold text-blue-600">24hr</p>
+                    <p className="text-sm text-gray-600">Avg Response Time</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-3xl font-bold text-blue-600">98%</p>
+                    <p className="text-sm text-gray-600">Data Accuracy</p>
+                  </div>
+                </div>
+                <Button asChild>
+                  <Link href="/community">
+                    Learn How Community Corrections Work
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* CTA Section - Mission Driven */}
