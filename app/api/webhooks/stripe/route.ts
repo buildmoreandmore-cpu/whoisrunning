@@ -81,15 +81,11 @@ export async function POST(request: NextRequest) {
 
       case "invoice.payment_succeeded":
         const invoice = event.data.object as Stripe.Invoice;
-        const subscriptionId = typeof invoice.subscription === 'string'
-          ? invoice.subscription
-          : invoice.subscription?.id;
 
         console.log("🔄 Recurring payment succeeded:", {
           invoiceId: invoice.id,
           amount: invoice.amount_paid / 100,
-          customerId: invoice.customer,
-          subscriptionId,
+          customerId: typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id,
         });
 
         // TODO: Update database
