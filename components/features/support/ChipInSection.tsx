@@ -101,17 +101,17 @@ export function ChipInSection() {
   return (
     <>
       <section className="mb-12">
-        <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white border-0 shadow-xl">
+        <Card className="bg-white border shadow-lg">
           <CardContent className="p-8 md:p-12">
             {/* Header */}
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 mb-4">
                 <Heart className="h-8 w-8 text-white" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900">
                 Keep Democracy Free & Accessible
               </h2>
-              <p className="text-xl text-blue-50 max-w-3xl mx-auto">
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto">
                 We don&apos;t run ads. We don&apos;t sell your data. We exist
                 because you value informed voting.
               </p>
@@ -119,7 +119,7 @@ export function ChipInSection() {
 
             {/* Amount Selection */}
             <div className="max-w-2xl mx-auto mb-8">
-              <p className="text-center text-lg text-blue-50 mb-4 font-medium">
+              <p className="text-center text-lg text-gray-700 mb-4 font-medium">
                 Chip in what you can:
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
@@ -129,8 +129,8 @@ export function ChipInSection() {
                     onClick={() => handleAmountSelect(amount)}
                     className={`py-4 px-6 rounded-lg font-bold text-xl transition-all ${
                       selectedAmount === amount && !customAmount
-                        ? "bg-white text-blue-600 shadow-lg scale-105"
-                        : "bg-white/10 backdrop-blur-sm text-white hover:bg-white/20"
+                        ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-lg scale-105"
+                        : "bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-300"
                     }`}
                   >
                     ${amount}
@@ -146,7 +146,7 @@ export function ChipInSection() {
                   placeholder="Custom amount"
                   value={customAmount}
                   onChange={(e) => handleCustomAmount(e.target.value)}
-                  className="pl-10 py-6 text-xl bg-white text-gray-900 placeholder:text-gray-500"
+                  className="pl-10 py-6 text-xl bg-white text-gray-900 placeholder:text-gray-500 border-gray-300"
                   min="1"
                 />
               </div>
@@ -159,9 +159,9 @@ export function ChipInSection() {
                   type="checkbox"
                   checked={isRecurring}
                   onChange={(e) => setIsRecurring(e.target.checked)}
-                  className="w-5 h-5 rounded border-white/30 text-blue-600 focus:ring-2 focus:ring-white/50"
+                  className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
-                <span className="text-blue-50 group-hover:text-white transition-colors">
+                <span className="text-gray-700 group-hover:text-gray-900 transition-colors">
                   Make this a monthly contribution (cancel anytime)
                 </span>
               </label>
@@ -169,24 +169,24 @@ export function ChipInSection() {
 
             {/* Impact Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-4xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
-                <Users className="h-8 w-8 mx-auto mb-2 text-blue-100" />
-                <p className="text-sm text-blue-100 mb-1">Every contribution helps us</p>
-                <p className="font-semibold text-white">
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6 text-center">
+                <Users className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                <p className="text-sm text-gray-600 mb-1">Every contribution helps us</p>
+                <p className="font-semibold text-gray-900">
                   Verify 10,000+ candidate profiles monthly
                 </p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
-                <Clock className="h-8 w-8 mx-auto mb-2 text-blue-100" />
-                <p className="text-sm text-blue-100 mb-1">Every contribution helps us</p>
-                <p className="font-semibold text-white">
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6 text-center">
+                <Clock className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                <p className="text-sm text-gray-600 mb-1">Every contribution helps us</p>
+                <p className="font-semibold text-gray-900">
                   Respond to corrections in 24 hours
                 </p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
-                <Shield className="h-8 w-8 mx-auto mb-2 text-blue-100" />
-                <p className="text-sm text-blue-100 mb-1">Every contribution helps us</p>
-                <p className="font-semibold text-white">
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6 text-center">
+                <Shield className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                <p className="text-sm text-gray-600 mb-1">Every contribution helps us</p>
+                <p className="font-semibold text-gray-900">
                   Stay free, accurate, and ad-free forever
                 </p>
               </div>
@@ -207,7 +207,7 @@ export function ChipInSection() {
                 size="lg"
                 onClick={handleChipIn}
                 disabled={!selectedAmount || selectedAmount <= 0 || processing}
-                className="bg-white text-blue-600 hover:bg-blue-50 font-bold text-lg px-8 py-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-gradient-to-br from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 font-bold text-lg px-8 py-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {processing ? (
                   "Processing..."
@@ -224,7 +224,7 @@ export function ChipInSection() {
                 size="lg"
                 variant="outline"
                 disabled={processing}
-                className="border-white/30 text-white hover:bg-white/10 font-semibold text-lg px-8 py-6"
+                className="border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold text-lg px-8 py-6"
               >
                 Maybe Later
               </Button>
@@ -232,14 +232,14 @@ export function ChipInSection() {
 
             {/* Social Proof */}
             <div className="text-center mt-8">
-              <p className="text-blue-100 flex items-center justify-center gap-2">
+              <p className="text-gray-700 flex items-center justify-center gap-2">
                 <Users className="h-5 w-5" />
                 <span className="font-semibold">{contributorCount.toLocaleString()}</span> people
                 chipped in this month
               </p>
               <a
                 href="/contributors"
-                className="text-sm text-blue-100 hover:text-white underline mt-2 inline-block"
+                className="text-sm text-blue-600 hover:text-blue-700 underline mt-2 inline-block"
               >
                 See who&apos;s supporting democracy →
               </a>
