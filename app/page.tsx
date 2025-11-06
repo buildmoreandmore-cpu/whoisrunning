@@ -33,11 +33,11 @@ export default async function Home() {
         {/* Hero Section */}
         <section className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">
-            Discover Who&apos;s Running in Your Area
+            Know Your Politicians in Minutes, Not Hours
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Get transparent, unbiased information about political candidates with resources,
-            voting records, quotes, and ideological positions.
+            Busy life? We get it. Quickly find who&apos;s running in your area and access their positions,
+            voting records, and key information—all in one place.
           </p>
           <SearchBar />
         </section>
@@ -112,10 +112,11 @@ export default async function Home() {
         {/* CTA Section */}
         <section className="bg-white rounded-lg p-8 text-center shadow-lg border">
           <h3 className="text-2xl font-bold mb-4 text-foreground">
-            Stay Informed, Make Better Decisions
+            No Time to Research? We&apos;ve Done It For You
           </h3>
           <p className="mb-6 max-w-2xl mx-auto text-muted-foreground">
-            Research candidates and make informed choices in every election.
+            Skip hours of searching. Get instant access to who&apos;s running in your area
+            and what they stand for—so you can vote confidently, even with a packed schedule.
           </p>
         </section>
       </main>
