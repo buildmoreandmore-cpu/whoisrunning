@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
           invoiceId: invoice.id,
           amount: invoice.amount_paid / 100,
           customerId: invoice.customer,
-          subscriptionId: invoice.subscription,
+          subscriptionId: invoice.subscription as string | undefined,
         });
 
         // TODO: Update database
