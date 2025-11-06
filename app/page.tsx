@@ -3,6 +3,7 @@ import { LocationFilter } from "@/components/features/location-filter/LocationFi
 import { PoliticianResults } from "@/components/features/location-filter/PoliticianResults";
 import { RecentWinnersServer } from "@/components/features/analytics/RecentWinnersServer";
 import { SearchBar } from "@/components/features/candidate/SearchBar";
+import { ChipInSection } from "@/components/features/support/ChipInSection";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, MapPin, TrendingUp, Award, Calculator, Users } from "lucide-react";
@@ -165,6 +166,9 @@ export default async function Home() {
             </Link>
           </Button>
         </section>
+
+        {/* Chip In Section */}
+        <ChipInSection />
 
         {/* Community Section */}
         <section className="mb-12">
