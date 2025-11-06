@@ -115,8 +115,7 @@ export default async function Home() {
             Stay Informed, Make Better Decisions
           </h3>
           <p className="mb-6 max-w-2xl mx-auto text-muted-foreground">
-            Our platform uses AI-powered research to bring you comprehensive,
-            fact-checked information about every candidate running for office.
+            Research candidates and make informed choices in every election.
           </p>
         </section>
       </main>
