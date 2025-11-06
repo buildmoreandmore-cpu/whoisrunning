@@ -224,60 +224,60 @@ export default async function ContributorsPage() {
 
         {/* How Your Contribution Helps */}
         <section className="mb-12">
-          <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white border-0">
+          <Card className="bg-white border shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-white">
+              <CardTitle className="text-2xl text-gray-900">
                 How Your Contribution Helps
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center font-bold text-white text-sm">
                   $5
                 </div>
                 <div>
-                  <p className="font-semibold mb-1">Verifies 50 Candidates</p>
-                  <p className="text-blue-100">
+                  <p className="font-semibold mb-1 text-gray-900">Verifies 50 Candidates</p>
+                  <p className="text-gray-700">
                     Covers data verification and fact-checking for 50 candidate
                     profiles
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center font-bold text-white text-sm">
                   $15
                 </div>
                 <div>
-                  <p className="font-semibold mb-1">
+                  <p className="font-semibold mb-1 text-gray-900">
                     Funds 1 Day of Operations
                   </p>
-                  <p className="text-blue-100">
+                  <p className="text-gray-700">
                     Covers server costs, data sources, and community corrections
                     for one day
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center font-bold text-white text-sm">
                   $50
                 </div>
                 <div>
-                  <p className="font-semibold mb-1">
+                  <p className="font-semibold mb-1 text-gray-900">
                     Powers 1 Week of Accuracy
                   </p>
-                  <p className="text-blue-100">
+                  <p className="text-gray-700">
                     Enables rapid response to community corrections and new
                     candidate additions
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center font-bold text-white text-sm">
                   $100
                 </div>
                 <div>
-                  <p className="font-semibold mb-1">Sponsors 1 Month</p>
-                  <p className="text-blue-100">
+                  <p className="font-semibold mb-1 text-gray-900">Sponsors 1 Month</p>
+                  <p className="text-gray-700">
                     Keeps us free and ad-free for thousands of voters throughout
                     an entire month
                   </p>
