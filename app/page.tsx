@@ -4,7 +4,9 @@ import { PoliticianResults } from "@/components/features/location-filter/Politic
 import { RecentWinnersServer } from "@/components/features/analytics/RecentWinnersServer";
 import { SearchBar } from "@/components/features/candidate/SearchBar";
 import Image from "next/image";
-import { Search, MapPin, TrendingUp, Award } from "lucide-react";
+import Link from "next/link";
+import { Search, MapPin, TrendingUp, Award, Calculator } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 // Force dynamic rendering to fetch fresh data on every request
 export const dynamic = 'force-dynamic';
@@ -107,6 +109,26 @@ export default async function Home() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <TrendingCandidatesServer />
           <RecentWinnersServer />
+        </section>
+
+        {/* Impact Calculator CTA */}
+        <section className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-center shadow-lg text-white mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
+            <Calculator className="h-8 w-8" />
+          </div>
+          <h3 className="text-2xl font-bold mb-4">
+            See How Local Policies Affect You
+          </h3>
+          <p className="mb-6 max-w-2xl mx-auto text-blue-50">
+            Enter your demographics and get a personalized report showing how state and local
+            policies impact your taxes, healthcare, education, housing, and more.
+          </p>
+          <Button size="lg" variant="secondary" asChild>
+            <Link href="/impact-calculator">
+              Try Impact Calculator
+              <Calculator className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
         </section>
 
         {/* CTA Section */}

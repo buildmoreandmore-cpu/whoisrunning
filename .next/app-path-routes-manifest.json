@@ -1,11 +1,13 @@
 {
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
+  "/api/demographics/analyze/route": "/api/demographics/analyze",
   "/api/location/cities/route": "/api/location/cities",
   "/api/location/counties/route": "/api/location/counties",
   "/api/location/politicians/route": "/api/location/politicians",
   "/api/perplexity/research/route": "/api/perplexity/research",
   "/api/test-perplexity/route": "/api/test-perplexity",
   "/candidate/[id]/page": "/candidate/[id]",
+  "/impact-calculator/page": "/impact-calculator",
   "/page": "/"
 }

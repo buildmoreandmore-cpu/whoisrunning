@@ -1,11 +1,13 @@
 {
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/demographics/analyze/route": "app/api/demographics/analyze/route.js",
   "/api/location/cities/route": "app/api/location/cities/route.js",
   "/api/location/counties/route": "app/api/location/counties/route.js",
   "/api/location/politicians/route": "app/api/location/politicians/route.js",
   "/api/perplexity/research/route": "app/api/perplexity/research/route.js",
   "/api/test-perplexity/route": "app/api/test-perplexity/route.js",
   "/candidate/[id]/page": "app/candidate/[id]/page.js",
+  "/impact-calculator/page": "app/impact-calculator/page.js",
   "/page": "app/page.js"
 }

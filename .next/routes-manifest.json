@@ -49,6 +49,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/api/demographics/analyze",
+      "regex": "^/api/demographics/analyze(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/demographics/analyze(?:/)?$"
+    },
+    {
       "page": "/api/location/cities",
       "regex": "^/api/location/cities(?:/)?$",
       "routeKeys": {},
@@ -77,6 +83,12 @@
       "regex": "^/api/test\\-perplexity(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/test\\-perplexity(?:/)?$"
+    },
+    {
+      "page": "/impact-calculator",
+      "regex": "^/impact\\-calculator(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/impact\\-calculator(?:/)?$"
     }
   ],
   "dataRoutes": [],
