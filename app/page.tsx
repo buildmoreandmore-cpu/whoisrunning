@@ -34,14 +34,49 @@ export default async function Home() {
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <section className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">
-            Know Your Politicians in Minutes, Not Hours
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+            Stop Voting Blind
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Busy life? We get it. Quickly find who&apos;s running in your area and access their positions,
-            voting records, and key information—all in one place.
+          <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto mb-6">
+            Know who you&apos;re actually voting for—without spending hours researching.
+          </p>
+          <p className="text-base text-gray-600 max-w-2xl mx-auto mb-8">
+            Find your local candidates&apos; positions, voting records, and what they actually stand for.
+            All in one place, in minutes.
           </p>
           <SearchBar />
+        </section>
+
+        {/* Why We Exist - Authentic Origin Story */}
+        <section className="mb-12">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-8 border-l-4 border-blue-600">
+            <h3 className="text-2xl font-bold mb-4 text-gray-900">Why This Exists</h3>
+            <div className="max-w-3xl mx-auto">
+              <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+                I missed a local election once. Not because I didn&apos;t care—but because figuring out
+                who was running for school board, city council, and county positions felt like a part-time job.
+              </p>
+              <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+                I spent hours clicking through outdated websites, hunting for voting records, and trying to
+                understand what candidates actually believed. By the time I felt informed enough, the election
+                had passed.
+              </p>
+              <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+                That year, decisions were made about my kid&apos;s school, my neighborhood&apos;s budget, and
+                policies that directly affected my family—and I had no say in it.
+              </p>
+              <p className="text-lg font-semibold text-gray-900 mb-2">
+                Never again.
+              </p>
+              <p className="text-base text-gray-600">
+                This tool exists so you never have that moment. Democracy shouldn&apos;t require a research degree.
+                You deserve to know who you&apos;re voting for without sacrificing your evenings and weekends.
+              </p>
+              <p className="text-sm text-gray-500 mt-6 italic">
+                - Built by voters who got tired of voting blind
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* How It Works Section */}
@@ -131,22 +166,36 @@ export default async function Home() {
           </Button>
         </section>
 
-        {/* CTA Section */}
+        {/* CTA Section - Mission Driven */}
         <section className="bg-white rounded-lg p-8 text-center shadow-lg border">
-          <h3 className="text-2xl font-bold mb-4 text-foreground">
-            No Time to Research? We&apos;ve Done It For You
+          <h3 className="text-2xl font-bold mb-4 text-gray-900">
+            Your Vote Matters. Now You&apos;ll Know Why.
           </h3>
-          <p className="mb-6 max-w-2xl mx-auto text-muted-foreground">
-            Skip hours of searching. Get instant access to who&apos;s running in your area
-            and what they stand for—so you can vote confidently, even with a packed schedule.
+          <p className="mb-6 max-w-2xl mx-auto text-gray-700 text-lg">
+            Local elections shape your schools, taxes, public safety, and neighborhood.
+            You shouldn&apos;t need a PhD in political science to make informed choices.
           </p>
+          <div className="bg-blue-50 rounded-lg p-6 max-w-2xl mx-auto mt-6">
+            <p className="text-base text-gray-700 mb-4">
+              <span className="font-semibold">We&apos;re not perfect.</span> Found an error? Let us know.
+              This is a work in progress built by real people who believe democracy should be accessible to everyone.
+            </p>
+            <p className="text-sm text-gray-600">
+              Non-partisan. No ads. Just the information you need to vote confidently.
+            </p>
+          </div>
         </section>
       </main>
 
       {/* Footer */}
       <footer className="border-t mt-16 py-8 bg-white/50">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 WhoIsRunning.org - Political Transparency Platform</p>
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm text-gray-600 mb-2">
+            &copy; 2025 WhoIsRunning.org - Built by voters, for voters
+          </p>
+          <p className="text-xs text-gray-500">
+            Non-partisan political transparency platform. Democracy shouldn&apos;t be a part-time job.
+          </p>
         </div>
       </footer>
     </div>
