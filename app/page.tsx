@@ -112,18 +112,18 @@ export default async function Home() {
         </section>
 
         {/* Impact Calculator CTA */}
-        <section className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-center shadow-lg text-white mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-4">
-            <Calculator className="h-8 w-8" />
+        <section className="bg-white rounded-lg p-8 text-center shadow-lg border mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
+            <Calculator className="h-8 w-8 text-blue-600" />
           </div>
-          <h3 className="text-2xl font-bold mb-4">
+          <h3 className="text-2xl font-bold mb-4 text-foreground">
             See How Local Policies Affect You
           </h3>
-          <p className="mb-6 max-w-2xl mx-auto text-blue-50">
+          <p className="mb-6 max-w-2xl mx-auto text-muted-foreground">
             Enter your demographics and get a personalized report showing how state and local
             policies impact your taxes, healthcare, education, housing, and more.
           </p>
-          <Button size="lg" variant="secondary" asChild>
+          <Button size="lg" asChild>
             <Link href="/impact-calculator">
               Try Impact Calculator
               <Calculator className="ml-2 h-5 w-5" />
