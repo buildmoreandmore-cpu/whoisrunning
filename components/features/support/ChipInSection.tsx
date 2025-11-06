@@ -67,21 +67,14 @@ export function ChipInSection() {
         throw new Error("Failed to create checkout session");
       }
 
-      const { sessionId } = await response.json();
+      const { url } = await response.json();
+
+      if (!url) {
+        throw new Error("No checkout URL received");
+      }
 
       // Redirect to Stripe Checkout
-      const stripe = await stripePromise;
-      if (!stripe) {
-        throw new Error("Stripe failed to load");
-      }
-
-      const { error: stripeError } = await stripe.redirectToCheckout({
-        sessionId,
-      });
-
-      if (stripeError) {
-        throw new Error(stripeError.message);
-      }
+      window.location.href = url;
     } catch (err: any) {
       console.error("Payment error:", err);
       setError(err.message || "Payment failed. Please try again.");
