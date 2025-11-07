@@ -56,7 +56,9 @@ export async function RecentWinnersServer() {
                 >
                   {winner.party}
                 </Badge>
-                <div className="text-sm font-medium">{winner.votePercentage}%</div>
+                {winner.votePercentage && (
+                  <div className="text-sm font-medium">{winner.votePercentage}%</div>
+                )}
               </div>
             </Link>
           ))}

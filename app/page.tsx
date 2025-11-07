@@ -6,7 +6,7 @@ import { SearchBar } from "@/components/features/candidate/SearchBar";
 import { ChipInSection } from "@/components/features/support/ChipInSection";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, MapPin, TrendingUp, Award, Calculator, Users } from "lucide-react";
+import { Search, MapPin, TrendingUp, Award, Calculator, Users, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Force dynamic rendering to fetch fresh data on every request
@@ -39,13 +39,20 @@ export default async function Home() {
             Stop Voting Blind
           </h2>
           <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto mb-6">
-            Know who you&apos;re actually voting for—without spending hours researching.
+            Know who you&apos;re voting for—without spending hours researching.
           </p>
           <p className="text-base text-gray-600 max-w-2xl mx-auto mb-8">
-            Find your local candidates&apos; positions, voting records, and what they actually stand for.
+            Find your local candidates&apos; positions, voting records, and what they really stand for.
             All in one place, in minutes.
           </p>
           <SearchBar />
+
+          {/* Early CTA Hint */}
+          <div className="mt-8 inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm text-blue-700">
+            <Heart className="h-4 w-4" />
+            <span>Free forever. No ads. Powered by voters like you.</span>
+            <Link href="#chip-in" className="font-semibold hover:underline">Support us →</Link>
+          </div>
         </section>
 
         {/* Why We Exist - Authentic Origin Story */}
@@ -132,6 +139,74 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* Featured Example Profiles */}
+        <section className="mb-12">
+          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-8 border-l-4 border-green-600">
+            <h3 className="text-2xl font-bold mb-4 text-gray-900">See How It Works</h3>
+            <p className="text-lg text-gray-700 mb-6">
+              Click any of these examples to see the depth of information we provide on each candidate:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Link
+                href="/candidate/gavin-newsom"
+                className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow border border-blue-200 hover:border-blue-400"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
+                    GN
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg">Gavin Newsom</div>
+                    <div className="text-sm text-gray-600">Governor • CA</div>
+                  </div>
+                </div>
+                <div className="text-sm text-gray-700">
+                  View voting record, policies, funding sources, and recent news
+                </div>
+              </Link>
+
+              <Link
+                href="/candidate/chuck-schumer"
+                className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow border border-blue-200 hover:border-blue-400"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
+                    CS
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg">Chuck Schumer</div>
+                    <div className="text-sm text-gray-600">Senate Leader • NY</div>
+                  </div>
+                </div>
+                <div className="text-sm text-gray-700">
+                  Complete legislative history and current initiatives
+                </div>
+              </Link>
+
+              <Link
+                href="/candidate/mike-johnson"
+                className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow border border-red-200 hover:border-red-400"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-white font-bold text-xl">
+                    MJ
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg">Mike Johnson</div>
+                    <div className="text-sm text-gray-600">House Speaker • LA</div>
+                  </div>
+                </div>
+                <div className="text-sm text-gray-700">
+                  Leadership positions, key votes, and policy stances
+                </div>
+              </Link>
+            </div>
+            <p className="text-sm text-gray-600 mt-6 text-center">
+              These examples show what you&apos;ll get for <span className="font-semibold">every candidate</span> in our database
+            </p>
+          </div>
+        </section>
+
         {/* Location Filter */}
         <section className="mb-12">
           <div className="bg-white rounded-lg shadow-lg p-6">
@@ -155,13 +230,24 @@ export default async function Home() {
           <h3 className="text-2xl font-bold mb-4 text-foreground">
             See How Local Policies Affect You
           </h3>
-          <p className="mb-6 max-w-2xl mx-auto text-muted-foreground">
-            Enter your demographics and get a personalized report showing how state and local
-            policies impact your taxes, healthcare, education, housing, and more.
+          <p className="mb-4 max-w-2xl mx-auto text-muted-foreground">
+            Our Impact Calculator helps you understand how your elected officials&apos; decisions
+            affect your daily life.
           </p>
+          <div className="bg-blue-50 rounded-lg p-4 max-w-2xl mx-auto mb-6">
+            <p className="text-sm text-gray-700 mb-2">
+              <span className="font-semibold">How it works:</span> Answer 5 questions about your household, and we&apos;ll show you:
+            </p>
+            <ul className="text-sm text-gray-700 text-left list-disc list-inside space-y-1">
+              <li>How property tax rates affect your budget</li>
+              <li>Which education policies impact your family</li>
+              <li>How healthcare legislation changes your costs</li>
+              <li>Transportation infrastructure investments in your area</li>
+            </ul>
+          </div>
           <Button size="lg" asChild>
             <Link href="/impact-calculator">
-              Try Impact Calculator
+              Try Impact Calculator (5 min)
               <Calculator className="ml-2 h-5 w-5" />
             </Link>
           </Button>

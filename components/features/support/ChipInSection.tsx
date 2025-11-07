@@ -100,7 +100,7 @@ export function ChipInSection() {
 
   return (
     <>
-      <section className="mb-12">
+      <section className="mb-12" id="chip-in">
         <Card className="bg-white border shadow-lg">
           <CardContent className="p-8 md:p-12">
             {/* Header */}
@@ -243,6 +243,26 @@ export function ChipInSection() {
               >
                 See who&apos;s supporting democracy →
               </a>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-6 mt-8 pt-8 border-t border-gray-200">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <span>Secure Payment</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <span>Cancel Anytime</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <span>100% Transparent</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <span>Non-Partisan</span>
+              </div>
             </div>
           </CardContent>
         </Card>

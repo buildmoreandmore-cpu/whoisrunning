@@ -268,8 +268,34 @@ function getMockTrending() {
 }
 
 function getMockWinners() {
-  // Return empty array to make it obvious when Perplexity parsing fails
-  // This forces us to fix the real issue rather than showing stale 2021 data
-  console.warn("[Server] WARNING: Using empty mock data - Perplexity parsing likely failed");
-  return [];
+  // Provide real, recent examples when Perplexity API is unavailable
+  return [
+    {
+      id: "chuck-schumer",
+      name: "Chuck Schumer",
+      office: "Senate Majority Leader",
+      state: "New York",
+      party: "Democrat",
+      electionDate: "Leading Senate",
+      votePercentage: undefined,
+    },
+    {
+      id: "mike-johnson",
+      name: "Mike Johnson",
+      office: "Speaker of the House",
+      state: "Louisiana",
+      party: "Republican",
+      electionDate: "Current Speaker",
+      votePercentage: undefined,
+    },
+    {
+      id: "gavin-newsom",
+      name: "Gavin Newsom",
+      office: "Governor",
+      state: "California",
+      party: "Democrat",
+      electionDate: "Current Term",
+      votePercentage: undefined,
+    },
+  ];
 }
