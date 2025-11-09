@@ -139,7 +139,7 @@ export default function ImpactCalculatorPage() {
       {/* Footer */}
       <footer className="border-t mt-16 py-8 bg-white/50">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 WhoIsRunning.org - Political Transparency Platform</p>
+          <p>&copy; 2024 WhoIsRunning.org - Political Transparency Platform</p>
         </div>
       </footer>
     </div>

@@ -87,6 +87,7 @@ export async function POST(request: NextRequest) {
     const content = data.choices[0].message.content;
 
     console.log("Perplexity response received, parsing impacts...");
+    console.log("Raw citations from Perplexity:", JSON.stringify(data.citations));
 
     // Parse impacts from response
     const impacts = parseImpactsFromResponse(content);
@@ -96,12 +97,21 @@ export async function POST(request: NextRequest) {
     // Generate summary
     const summary = generateSummary(demographics, impacts);
 
+    // Transform Perplexity citations to our Citation format
+    const citations = (data.citations || []).map((citation: any) => ({
+      url: citation.url || citation,
+      title: citation.title || citation.text || citation.url || citation,
+      source: citation.source || undefined,
+    }));
+
+    console.log("Transformed citations:", JSON.stringify(citations));
+
     // Build result
     const result: ImpactAnalysisResult = {
       demographics,
       impacts,
       summary,
-      citations: data.citations || [],
+      citations,
       timestamp: new Date().toISOString(),
     };
 

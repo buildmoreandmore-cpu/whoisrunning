@@ -154,18 +154,25 @@ export function ImpactResults({ results, onReset }: ImpactResultsProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {results.citations.map((citation, idx) => (
-                <a
-                  key={idx}
-                  href={citation.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-primary hover:underline"
-                >
-                  <ExternalLink className="h-3 w-3" />
-                  {citation.title || citation.url}
-                </a>
-              ))}
+              {results.citations
+                .filter((citation) => citation && (citation.url || citation.title))
+                .map((citation, idx) => {
+                  const displayText = citation.title || citation.url || `Source ${idx + 1}`;
+                  const linkUrl = citation.url || '#';
+
+                  return (
+                    <a
+                      key={idx}
+                      href={linkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm text-primary hover:underline break-all"
+                    >
+                      <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                      <span>{displayText}</span>
+                    </a>
+                  );
+                })}
             </div>
           </CardContent>
         </Card>
