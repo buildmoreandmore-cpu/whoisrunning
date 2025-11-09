@@ -323,7 +323,7 @@ export default async function Home() {
       <footer className="border-t mt-16 py-8 bg-white/50">
         <div className="container mx-auto px-4 text-center">
           <p className="text-sm text-gray-600 mb-2">
-            &copy; 2025 WhoIsRunning.org - Built by voters, for voters
+            &copy; 2024 WhoIsRunning.org - Built by voters, for voters
           </p>
           <p className="text-xs text-gray-500">
             Non-partisan political transparency platform. Democracy shouldn&apos;t be a part-time job.

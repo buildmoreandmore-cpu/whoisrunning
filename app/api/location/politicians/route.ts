@@ -48,12 +48,14 @@ export async function POST(request: NextRequest) {
 - County Commissioners or Board Members (if county provided)
 - City Council members (if city provided)
 
-For each official provide:
-1. Full name
-2. Exact office/title
-3. Political party
+For each official, provide this exact format:
+**[Full Name]** - [Office/Title] - Party: [Democrat/Republican/Independent]
 
-Format as a numbered list. Focus on currently serving officials, not candidates.`,
+Example:
+**John Smith** - U.S. Senator - Party: Democrat
+**Jane Doe** - Governor - Party: Republican
+
+IMPORTANT: Always include the party affiliation in the format "Party: [Democrat/Republican/Independent]" even if the official is well-known. Focus on currently serving officials, not candidates.`,
           },
         ],
         temperature: 0.2,
@@ -126,17 +128,34 @@ function parsePoliticians(content: string): Array<{
       ? officeMatch[1].trim().replace(/[*]/g, "")
       : "Elected Official";
 
-    // Extract party
+    // Extract party - improved regex to catch more variations
     let party = "Unknown";
-    const partyMatch = restOfLine.match(/Party:\s*\*?\*?([^*\n]+)/i) ||
-                      restOfLine.match(/\(([DR])\)/) ||
-                      restOfLine.match(/\b(Democrat|Republican|Democratic|Independent|GOP)\b/i);
 
-    if (partyMatch) {
-      const p = partyMatch[1].toLowerCase();
-      if (p.includes("demo") || p === "d") party = "Democrat";
-      else if (p.includes("rep") || p === "r" || p === "gop") party = "Republican";
-      else if (p.includes("ind")) party = "Independent";
+    // Try multiple patterns to find party affiliation
+    const partyPatterns = [
+      /Party:\s*\*?\*?([^*\n,]+)/i,                           // "Party: Democrat"
+      /\(([DR])\)/,                                            // "(D)" or "(R)"
+      /\b(Democrat|Republican|Democratic|Independent|GOP)\b/i, // Word match
+      /-\s*(Democrat|Republican|Democratic|Independent)/i,     // "- Democrat"
+      /\*\*Party\*\*:\s*([^*\n,]+)/i,                         // "**Party**: Democrat"
+      /Political\s+Party:\s*([^*\n,]+)/i,                     // "Political Party: Democrat"
+    ];
+
+    for (const pattern of partyPatterns) {
+      const match = restOfLine.match(pattern);
+      if (match) {
+        const p = match[1].toLowerCase().trim();
+        if (p.includes("demo") || p === "d") {
+          party = "Democrat";
+          break;
+        } else if (p.includes("rep") || p === "r" || p.includes("gop")) {
+          party = "Republican";
+          break;
+        } else if (p.includes("ind")) {
+          party = "Independent";
+          break;
+        }
+      }
     }
 
     politicians.push({
